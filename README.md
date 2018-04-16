@@ -1,14 +1,3 @@
----
-title: Pulsar Java Tutorial.
-description: Learn how to create Pulsar applications in Java.
-tags:
-- pulsar
-- Pulsar example
-- Pulsar java
-- Producer
-- Consumer
----
-
 # Getting started with Pulsar in Java
 
 In this tutorial, we will create a simple Java application that can send and receive
