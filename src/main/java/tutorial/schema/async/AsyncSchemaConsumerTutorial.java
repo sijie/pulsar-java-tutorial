@@ -44,13 +44,13 @@ public class AsyncSchemaConsumerTutorial {
                                                 .thenRun(() -> log.info("Acknowledged tweet message with ID {}", tweetMsg.getMessageId()));
                                     })
                                     .exceptionally(ex -> {
-                                        ex.printStackTrace();
+                                        log.error(ex.toString());
                                         return null;
                                     });
                         } while (true);
                     })
                     .exceptionally(ex -> {
-                        ex.printStackTrace();
+                        log.error(ex.toString());
                         return null;
                     });
         } catch (PulsarClientException e) {

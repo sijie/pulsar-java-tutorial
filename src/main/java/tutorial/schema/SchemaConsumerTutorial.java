@@ -14,33 +14,29 @@ public class SchemaConsumerTutorial {
     private static final String TOPIC_NAME = "tutorial-topic";
     private static final String SUBSCRIPTION_NAME = "tutorial-subscription";
 
-    public static void main(String[] args) {
-        try {
-            PulsarClient client = PulsarClient.builder()
-                    .serviceUrl(SERVICE_URL)
-                    .build();
+    public static void main(String[] args) throws PulsarClientException {
+        PulsarClient client = PulsarClient.builder()
+                .serviceUrl(SERVICE_URL)
+                .build();
 
-            log.info("Created a client for the Pulsar cluster at {}", SERVICE_URL);
+        log.info("Created a client for the Pulsar cluster at {}", SERVICE_URL);
 
-            Consumer<Tweet> tweetConsumer = client.newConsumer(new TweetSchema())
-                    .topic(TOPIC_NAME)
-                    .subscriptionName(SUBSCRIPTION_NAME)
-                    .subscriptionType(SubscriptionType.Shared)
-                    .subscribe();
+        Consumer<Tweet> tweetConsumer = client.newConsumer(new TweetSchema())
+                .topic(TOPIC_NAME)
+                .subscriptionName(SUBSCRIPTION_NAME)
+                .subscriptionType(SubscriptionType.Shared)
+                .subscribe();
 
-            log.info("Created a tweet consumer for the topic {}", TOPIC_NAME);
+        log.info("Created a tweet consumer for the topic {}", TOPIC_NAME);
 
-            do {
-                Message<Tweet> tweetMsg = tweetConsumer.receive();
-                Tweet tweet = tweetMsg.getValue();
-                String username = tweet.getUsername();
-                String content = tweet.getContent();
-                String timestamp = tweet.getTimestamp();
-                log.info("The user {} just tweeted: \"{}\" at {}", username, content, timestamp);
-                tweetConsumer.acknowledge(tweetMsg);
-            } while (true);
-        } catch (PulsarClientException e) {
-            e.printStackTrace();
-        }
+        do {
+            Message<Tweet> tweetMsg = tweetConsumer.receive();
+            Tweet tweet = tweetMsg.getValue();
+            String username = tweet.getUsername();
+            String content = tweet.getContent();
+            String timestamp = tweet.getTimestamp();
+            log.info("The user {} just tweeted: \"{}\" at {}", username, content, timestamp);
+            tweetConsumer.acknowledge(tweetMsg);
+        } while (true);
     }
 }

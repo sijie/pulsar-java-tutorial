@@ -36,8 +36,16 @@ public class AsyncSchemaProducerTutorial {
                             tweetProducer.sendAsync(tweet)
                                     .thenAccept((MessageId msgId) -> {
                                         log.info("Successfully sent tweet message with an ID of {}", msgId);
+                                    })
+                                    .exceptionally(ex -> {
+                                        log.error(ex.toString());
+                                        return null;
                                     });
                         });
+                    })
+                    .exceptionally(ex -> {
+                        log.error(ex.toString());
+                        return null;
                     });
         } catch (PulsarClientException e) {
             e.printStackTrace();
