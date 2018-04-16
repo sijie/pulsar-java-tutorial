@@ -23,10 +23,14 @@ public class AsyncSchemaProducerTutorial {
                     .serviceUrl(SERVICE_URL)
                     .build();
 
+            log.info("Created a client for the Pulsar cluster running at {}", SERVICE_URL);
+
             client.newProducer(new TweetSchema())
                     .topic(TOPIC_NAME)
                     .createAsync()
                     .thenAccept((Producer<Tweet> tweetProducer) -> {
+                        log.info("Producer created asynchronously for the topic {}", TOPIC_NAME);
+
                         IntStream.range(1, NUM_TO_PRODUCE + 1).forEach(i -> {
                             Tweet tweet = new Tweet("elonmusk123", String.format("This is tweet %d", i));
                             tweetProducer.sendAsync(tweet)
