@@ -37,9 +37,17 @@ public class AsyncProducerTutorial {
                             msgBuilder.setContent(msgContent);
                             producer.sendAsync(msgBuilder.build())
                                     .thenAccept(msgId -> {
-                                        log.info("Successfully sent message with ID {}", new String(msgId.toByteArray()));
+                                        log.info("Successfully sent message with ID {}", msgId);
+                                    })
+                                    .exceptionally(ex -> {
+                                        ex.printStackTrace();
+                                        return null;
                                     });
                         });
+                    })
+                    .exceptionally(ex -> {
+                        ex.printStackTrace();
+                        return null;
                     });
         } catch (PulsarClientException e) {
             e.printStackTrace();

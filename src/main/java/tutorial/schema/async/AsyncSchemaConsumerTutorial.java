@@ -31,6 +31,7 @@ public class AsyncSchemaConsumerTutorial {
                     .subscribeAsync()
                     .thenAccept((Consumer<Tweet> tweetConsumer) -> {
                         log.info("Consumer created asynchronously for the topic {}", TOPIC_NAME);
+
                         do {
                             tweetConsumer.receiveAsync()
                                     .thenAccept((Message<Tweet> tweetMsg) -> {
@@ -41,8 +42,16 @@ public class AsyncSchemaConsumerTutorial {
                                         log.info("The user {} just tweeted: \"{}\" at {}", username, content, timestamp);
                                         tweetConsumer.acknowledgeAsync(tweetMsg)
                                                 .thenRun(() -> log.info("Acknowledged tweet message with ID {}", tweetMsg.getMessageId()));
+                                    })
+                                    .exceptionally(ex -> {
+                                        ex.printStackTrace();
+                                        return null;
                                     });
                         } while (true);
+                    })
+                    .exceptionally(ex -> {
+                        ex.printStackTrace();
+                        return null;
                     });
         } catch (PulsarClientException e) {
             e.printStackTrace();

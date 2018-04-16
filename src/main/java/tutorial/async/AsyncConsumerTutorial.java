@@ -27,14 +27,23 @@ public class AsyncConsumerTutorial {
                     .subscribeAsync()
                     .thenAccept(consumer -> {
                         log.info("Consumer created asynchronously for the topic {}", TOPIC_NAME);
+
                         do {
                             consumer.receiveAsync()
                                     .thenAccept(msg -> {
                                         String msgContent = new String(msg.getData());
                                         String msgId = new String(msg.getMessageId().toByteArray());
                                         log.info("Received message '{}' with msg-id={}", msgContent, msgId);
+                                    })
+                                    .exceptionally(ex -> {
+                                        ex.printStackTrace();
+                                        return null;
                                     });
                         } while (true);
+                    })
+                    .exceptionally(ex -> {
+                        ex.printStackTrace();
+                        return null;
                     });
         } catch (PulsarClientException e) {
             e.printStackTrace();
