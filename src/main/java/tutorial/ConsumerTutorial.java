@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 public class ConsumerTutorial {
     private static final Logger log = LoggerFactory.getLogger(ConsumerTutorial.class);
     private static final String SERVICE_URL = "pulsar://localhost:6650";
-    private static final String TOPIC_NAME = "persistent://sample/standalone/ns1/tutorial-topic";
+    private static final String TOPIC_NAME = "tutorial-topic";
     private static final String SUBSCRIPTION_NAME = "tutorial-subscription";
 
     public static void main(String[] args) throws IOException {

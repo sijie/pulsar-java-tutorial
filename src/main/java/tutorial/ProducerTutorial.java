@@ -32,7 +32,7 @@ import java.util.stream.IntStream;
 public class ProducerTutorial {
     private static final Logger log = LoggerFactory.getLogger(ProducerTutorial.class);
     private static final String SERVICE_URL = "pulsar://localhost:6650";
-    private static final String TOPIC_NAME = "persistent://sample/standalone/ns1/tutorial-topic";
+    private static final String TOPIC_NAME = "tutorial-topic";
 
     public static void main(String[] args) throws IOException {
         // Create a Pulsar client instance. A single instance can be shared across many
