@@ -22,7 +22,7 @@
   <version>0.0.1-SNAPSHOT</version>
 
   <properties>
-    <pulsar.version>1.19.0-incubating</pulsar.version>
+    <pulsar.version>2.0.0-incubating-SNAPSHOT</pulsar.version>
   </properties>
 
   <dependencies>

@@ -17,13 +17,7 @@ package tutorial;
 
 import java.io.IOException;
 
-import org.apache.pulsar.client.api.CompressionType;
-import org.apache.pulsar.client.api.Message;
-import org.apache.pulsar.client.api.MessageBuilder;
-import org.apache.pulsar.client.api.MessageId;
-import org.apache.pulsar.client.api.Producer;
-import org.apache.pulsar.client.api.ProducerConfiguration;
-import org.apache.pulsar.client.api.PulsarClient;
+import org.apache.pulsar.client.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,21 +25,25 @@ public class ProducerTutorial {
 
     private static final String SERVICE_URL = "pulsar://localhost:6650";
 
-    private static final String TOPIC_NAME = "persistent://sample/standalone/ns1/tutorial-topic";
+    private static final String TOPIC_NAME = "tutorial-topic";
 
     public static void main(String[] args) throws IOException {
         // Create a Pulsar client instance. A single instance can be shared across many
         // producers and consumer within the same application
-        PulsarClient client = PulsarClient.create(SERVICE_URL);
+        ClientBuilder clientBuilder = PulsarClient.builder();
+        clientBuilder.serviceUrl(SERVICE_URL);
+        PulsarClient client = clientBuilder.build();
 
         // Here you get the chance to configure producer specific settings. eg:
-        ProducerConfiguration conf = new ProducerConfiguration();
+        ProducerBuilder<byte[]> producerBuilder = client.newProducer();
 
         // Enable compression
-        conf.setCompressionType(CompressionType.LZ4);
+        producerBuilder.compressionType(CompressionType.LZ4);
+        // Set the topic
+        producerBuilder.topic(TOPIC_NAME);
 
         // Once the producer is created, it can be used for the entire application life-cycle
-        Producer producer = client.createProducer(TOPIC_NAME, conf);
+        Producer<byte[]> producer = producerBuilder.create();
         log.info("Created Pulsar producer");
 
         // Send few test messages

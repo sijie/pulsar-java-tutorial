@@ -17,11 +17,7 @@ package tutorial;
 
 import java.io.IOException;
 
-import org.apache.pulsar.client.api.Consumer;
-import org.apache.pulsar.client.api.ConsumerConfiguration;
-import org.apache.pulsar.client.api.Message;
-import org.apache.pulsar.client.api.PulsarClient;
-import org.apache.pulsar.client.api.SubscriptionType;
+import org.apache.pulsar.client.api.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,24 +25,28 @@ public class ConsumerTutorial {
 
     private static final String SERVICE_URL = "pulsar://localhost:6650";
 
-    private static final String TOPIC_NAME = "persistent://sample/standalone/ns1/tutorial-topic";
+    private static final String TOPIC_NAME = "tutorial-topic";
 
     private static final String SUBSCRIPTION_NAME = "tutorial-subscription";
 
     public static void main(String[] args) throws IOException {
         // Create a Pulsar client instance. A single instance can be shared across many
         // producers and consumer within the same application
-        PulsarClient client = PulsarClient.create(SERVICE_URL);
+        ClientBuilder clientBuilder = PulsarClient.builder();
+        clientBuilder.serviceUrl(SERVICE_URL);
+        PulsarClient client = clientBuilder.build();
 
         // Here you get the chance to configure consumer specific settings. eg:
-        ConsumerConfiguration conf = new ConsumerConfiguration();
+        ConsumerBuilder<byte[]> consumerBuilder = client.newConsumer();
+        consumerBuilder.topic(TOPIC_NAME)
+                // Allow multiple consumers to attache to the same subscription
+                // and get messages dispatched as a Queue
+                .subscriptionType(SubscriptionType.Shared)
+                .subscriptionName(SUBSCRIPTION_NAME);
 
-        // Allow multiple consumers to attache to the same subscription
-        // and get messages dispatched as a Queue
-        conf.setSubscriptionType(SubscriptionType.Shared);
 
         // Once the consumer is created, it can be used for the entire application life-cycle
-        Consumer consumer = client.subscribe(TOPIC_NAME, SUBSCRIPTION_NAME, conf);
+        Consumer<byte[]> consumer = consumerBuilder.subscribe();    
         log.info("Created Pulsar consumer");
 
         while (true) {
