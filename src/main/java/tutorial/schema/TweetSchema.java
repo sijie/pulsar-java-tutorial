@@ -12,7 +12,7 @@ import java.io.IOException;
 public class TweetSchema implements Schema<Tweet> {
     private final Kryo kryo;
 
-    TweetSchema() {
+    public TweetSchema() {
         this.kryo = new Kryo();
         kryo.register(Tweet.class);
     }
