@@ -35,7 +35,8 @@ public class SchemaConsumerTutorial {
                 Tweet tweet = tweetMsg.getValue();
                 String username = tweet.getUsername();
                 String content = tweet.getContent();
-                log.info("The user {} just tweeted: \"{}\"", username, content);
+                String timestamp = tweet.getTimestamp();
+                log.info("The user {} just tweeted: \"{}\" at {}", username, content, timestamp);
                 tweetConsumer.acknowledge(tweetMsg);
             } while (true);
         } catch (PulsarClientException e) {

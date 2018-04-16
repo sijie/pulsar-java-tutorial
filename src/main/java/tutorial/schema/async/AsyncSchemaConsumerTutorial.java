@@ -37,7 +37,8 @@ public class AsyncSchemaConsumerTutorial {
                                         Tweet tweet = tweetMsg.getValue();
                                         String username = tweet.getUsername();
                                         String content = tweet.getContent();
-                                        log.info("The user {} just tweeted: \"{}\"", username, content);
+                                        String timestamp = tweet.getTimestamp();
+                                        log.info("The user {} just tweeted: \"{}\" at {}", username, content, timestamp);
                                         tweetConsumer.acknowledgeAsync(tweetMsg)
                                                 .thenRun(() -> log.info("Acknowledged tweet message with ID {}", tweetMsg.getMessageId()));
                                     });

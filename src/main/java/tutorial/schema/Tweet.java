@@ -1,12 +1,17 @@
 package tutorial.schema;
 
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Tweet {
     private String username;
     private String content;
+    private String timestamp;
 
     public Tweet(String username, String content) {
         this.username = username;
         this.content = content;
+        this.timestamp = ZonedDateTime.now().format(DateTimeFormatter.ISO_TIME);
     }
 
     public Tweet() {}
@@ -25,5 +30,9 @@ public class Tweet {
 
     public String getContent() {
         return content;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
     }
 }
