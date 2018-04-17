@@ -2,7 +2,6 @@ package tutorial.stats;
 
 import org.apache.pulsar.client.api.Message;
 import org.apache.pulsar.client.api.MessageBuilder;
-import org.apache.pulsar.client.api.MessageId;
 import org.apache.pulsar.client.api.Producer;
 import org.apache.pulsar.client.api.ProducerStats;
 import org.apache.pulsar.client.api.PulsarClient;
@@ -15,7 +14,7 @@ import java.util.stream.IntStream;
 public class ProducerStatsTutorial {
     private static final Logger log = LoggerFactory.getLogger(ProducerStatsTutorial.class);
     private static final String SERVICE_URL = "pulsar://localhost:6650";
-    private static final String TOPIC_NAME = "persistent://sample/standalone/ns1/tutorial-topic";
+    private static final String TOPIC_NAME = "tutorial-topic";
     private static final int NUM_TO_PRODUCE = 1000;
 
     public static void main(String[] args) throws PulsarClientException {
