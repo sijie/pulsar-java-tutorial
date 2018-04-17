@@ -23,10 +23,10 @@ for testing purposes:
 $ brew tap streamlio/homebrew-formulae
 
 # Install
-brew install streamlio/homebrew-formulae/pulsar
+$ brew install streamlio/homebrew-formulae/pulsar
 
 # Start the Pulsar standalone as a background service
-brew services start pulsar
+$ brew services start pulsar
 ```
 
 ## Clone the project

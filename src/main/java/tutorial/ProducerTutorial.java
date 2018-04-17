@@ -20,7 +20,6 @@ import org.apache.pulsar.client.api.Message;
 import org.apache.pulsar.client.api.MessageBuilder;
 import org.apache.pulsar.client.api.MessageId;
 import org.apache.pulsar.client.api.Producer;
-import org.apache.pulsar.client.api.ProducerBuilder;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
 import org.slf4j.Logger;
@@ -41,30 +40,31 @@ public class ProducerTutorial {
                 .serviceUrl(SERVICE_URL)
                 .build();
 
-        // Here you get the chance to configure producer specific settings. eg:
-        ProducerBuilder<byte[]> producerBuilder = client.newProducer();
-
-        // Enable compression
-        producerBuilder.compressionType(CompressionType.LZ4);
-        // Set the topic
-        producerBuilder.topic(TOPIC_NAME);
+        // Here you get the chance to configure producer specific settings
+        Producer<byte[]> producer = client.newProducer()
+                // Set the topic
+                .topic(TOPIC_NAME)
+                // Enable compression
+                .compressionType(CompressionType.LZ4)
+                .create();
 
         // Once the producer is created, it can be used for the entire application life-cycle
-        Producer<byte[]> producer = producerBuilder.create();
-        log.info("Created Pulsar producer");
+        log.info("Created producer for the topic {}", TOPIC_NAME);
 
-        // Send a few test messages
+        // Send 10 test messages
         IntStream.range(1, 11).forEach(i -> {
             String content = String.format("hello-pulsar-%d", i);
 
             // Build a message object
-            Message msg = MessageBuilder.create().setContent(content.getBytes()).build();
+            Message<byte[]> msg = MessageBuilder.create()
+                    .setContent(content.getBytes())
+                    .build();
 
-            // Send a message (waits until the message is persisted)
+            // Send each message and log message content and ID when successfully received
             try {
                 MessageId msgId = producer.send(msg);
 
-                log.info("Published msg='{}' with msg-id={}", content, msgId);
+                log.info("Published message '{}' with the ID {}", content, msgId);
             } catch (PulsarClientException e) {
                 log.error(e.getMessage());
             }
