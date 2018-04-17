@@ -23,16 +23,21 @@ public class ProducerStatsTutorial {
                 .serviceUrl(SERVICE_URL)
                 .build();
 
+        log.info("Created a client for the Pulsar cluster at {}", SERVICE_URL);
+
         Producer<byte[]> producer = client.newProducer()
                 .topic(TOPIC_NAME)
                 .create();
 
+        log.info("Created a producer for the topic {}", TOPIC_NAME);
+
+        log.info("Sending {} example messages", NUM_TO_PRODUCE);
         IntStream.range(1, NUM_TO_PRODUCE + 1).forEach(i -> {
             Message<byte[]> msg = MessageBuilder.create()
                     .setContent(String.format("Message %d", i).getBytes())
                     .build();
             try {
-                MessageId msgId = producer.send(msg);
+                producer.send(msg);
             } catch (PulsarClientException e) {
                 log.error(e.getMessage());
             }
@@ -42,8 +47,9 @@ public class ProducerStatsTutorial {
 
         log.info("Stats for this producer:");
         log.info("========================");
-        log.info("Messages sent: %d", stats.getTotalMsgsSent());
-        log.info("Send rate: %d", stats.getSendMsgsRate());
+        log.info("Messages sent: {}", stats.getTotalMsgsSent());
+        log.info("Send rate: {}", stats.getSendMsgsRate());
+        log.info("Failed sends: {}", stats.getNumSendFailed());
 
         producer.close();
         client.close();
