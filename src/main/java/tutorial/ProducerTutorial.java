@@ -15,24 +15,31 @@
  */
 package tutorial;
 
-import java.io.IOException;
-
-import org.apache.pulsar.client.api.*;
+import org.apache.pulsar.client.api.CompressionType;
+import org.apache.pulsar.client.api.Message;
+import org.apache.pulsar.client.api.MessageBuilder;
+import org.apache.pulsar.client.api.MessageId;
+import org.apache.pulsar.client.api.Producer;
+import org.apache.pulsar.client.api.ProducerBuilder;
+import org.apache.pulsar.client.api.PulsarClient;
+import org.apache.pulsar.client.api.PulsarClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.stream.IntStream;
+
 public class ProducerTutorial {
-
+    private static final Logger log = LoggerFactory.getLogger(ProducerTutorial.class);
     private static final String SERVICE_URL = "pulsar://localhost:6650";
-
     private static final String TOPIC_NAME = "tutorial-topic";
 
     public static void main(String[] args) throws IOException {
         // Create a Pulsar client instance. A single instance can be shared across many
         // producers and consumer within the same application
-        ClientBuilder clientBuilder = PulsarClient.builder();
-        clientBuilder.serviceUrl(SERVICE_URL);
-        PulsarClient client = clientBuilder.build();
+        PulsarClient client = PulsarClient.builder()
+                .serviceUrl(SERVICE_URL)
+                .build();
 
         // Here you get the chance to configure producer specific settings. eg:
         ProducerBuilder<byte[]> producerBuilder = client.newProducer();
@@ -46,21 +53,23 @@ public class ProducerTutorial {
         Producer<byte[]> producer = producerBuilder.create();
         log.info("Created Pulsar producer");
 
-        // Send few test messages
-        for (int i = 0; i < 10; i++) {
+        // Send a few test messages
+        IntStream.range(1, 11).forEach(i -> {
             String content = String.format("hello-pulsar-%d", i);
 
             // Build a message object
             Message msg = MessageBuilder.create().setContent(content.getBytes()).build();
 
             // Send a message (waits until the message is persisted)
-            MessageId msgId = producer.send(msg);
+            try {
+                MessageId msgId = producer.send(msg);
 
-            log.info("Published msg='{}' with msg-id={}", content, msgId);
-        }
+                log.info("Published msg='{}' with msg-id={}", content, msgId);
+            } catch (PulsarClientException e) {
+                log.error(e.getMessage());
+            }
+        });
 
         client.close();
     }
-
-    private static final Logger log = LoggerFactory.getLogger(ProducerTutorial.class);
 }
