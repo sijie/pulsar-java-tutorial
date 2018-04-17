@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
 public class ProducerStatsTutorial {
     private static final Logger log = LoggerFactory.getLogger(ProducerStatsTutorial.class);
     private static final String SERVICE_URL = "pulsar://localhost:6650";
-    private static final String TOPIC_NAME = "tutorial-topic";
+    private static final String TOPIC_NAME = "persistent://sample/standalone/ns1/tutorial-topic";
     private static final int NUM_TO_PRODUCE = 1000;
 
     public static void main(String[] args) throws PulsarClientException {
@@ -47,7 +47,7 @@ public class ProducerStatsTutorial {
 
         log.info("Stats for this producer:");
         log.info("========================");
-        log.info("Messages sent: {}", stats.getTotalMsgsSent());
+        log.info("Messages sent: {}", stats.getNumMsgsSent());
         log.info("Send rate: {}", stats.getSendMsgsRate());
         log.info("Failed sends: {}", stats.getNumSendFailed());
 

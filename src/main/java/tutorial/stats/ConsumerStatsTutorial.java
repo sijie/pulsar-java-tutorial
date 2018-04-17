@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 public class ConsumerStatsTutorial {
     private static final Logger log = LoggerFactory.getLogger(ConsumerStatsTutorial.class);
     private static final String SERVICE_URL = "pulsar://localhost:6650";
-    private static final String TOPIC_NAME = "tutorial-topic";
+    private static final String TOPIC_NAME = "persistent://sample/standalone/ns1/tutorial-topic";
     private static final String SUBSCRIPTION_NAME = "tutorial-subscription";
 
     public static void main(String[] args) throws PulsarClientException {
@@ -28,12 +28,21 @@ public class ConsumerStatsTutorial {
 
         log.info("Consumer created for topic {}", TOPIC_NAME);
 
+
+        // Set a counter
+        int i = 0;
+
+        // Set a limit of messages to receive
+        int limit = 500;
+
+        // Receive the specified number of messages, then break the loop
         do {
+            i++;
             Message<byte[]> msg = consumer.receive();
 
-            // No processing logic applied, just basic acks
+            // No processing logic applied, just basic message acks
             consumer.acknowledge(msg);
-        } while (!consumer.hasReachedEndOfTopic());
+        } while (i < limit);
 
         ConsumerStats stats = consumer.getStats();
 
