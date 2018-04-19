@@ -1,0 +1,39 @@
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+group = 'com.streamlio.pulsar'
+archivesBaseName = 'pulsar-java-tutorial'
+version = '0.0.1'
+
+def urlFile = { url, name ->
+    File file = new File("$buildDir/download/${name}.jar")
+    file.parentFile.mkdirs()
+    if (!file.exists()) {
+        new URL(url).withInputStream { downloadStream ->
+            file.withOutputStream { fileOut ->
+                fileOut << downloadStream
+            }
+        }
+    }
+    files(file.absolutePath)
+}
+
+dependencies {
+    compile urlFile('https://github.com/streamlio/pulsar-java-tutorial/releases/download/0.0.1/pulsar-client-2.0.0-incubating-SNAPSHOT.jar', 'pulsar-client')
+    compile group: 'com.esotericsoftware',     name: 'kryo',             version: '4.0.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.8.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core',       version: '2.8.2'
+}
+
+jar {
+    doFirst {
+        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    }
+    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+}
