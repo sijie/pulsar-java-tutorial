@@ -26,9 +26,10 @@ def urlFile = { url, name ->
 
 dependencies {
     compile urlFile('https://github.com/streamlio/pulsar-java-tutorial/releases/download/0.0.1/pulsar-client-2.0.0-incubating-SNAPSHOT.jar', 'pulsar-client')
-    compile group: 'com.esotericsoftware',     name: 'kryo',             version: '4.0.2'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.8.2'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core',       version: '2.8.2'
+    compile group: 'com.esotericsoftware',     name: 'kryo',                version: '4.0.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl',    version: '2.8.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core',          version: '2.8.2'
+    compile group: 'org.apache.pulsar',        name: 'pulsar-client-kafka', version: '1.22.0-incubating'
 }
 
 jar {
@@ -36,4 +37,31 @@ jar {
         from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     }
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+}
+
+task("producerTutorial", dependsOn: 'classes', type: JavaExec) {
+  main = 'tutorial.ProducerTutorial'
+  classpath = sourceSets.main.runtimeClasspath
+}
+
+task("consumerTutorial", dependsOn: 'classes', type: JavaExec) {
+  main = 'tutorial.ConsumerTutorial'
+  classpath = sourceSets.main.runtimeClasspath
+}
+
+task("readerTutorial", dependsOn: 'classes', type: JavaExec) {
+  main = 'tutorial.ReaderTutorial'
+  classpath = sourceSets.main.runtimeClasspath
+}
+
+task("kafkaConsumer", dependsOn: 'classes', type: JavaExec) {
+  main = 'tutorial.kafka.KafkaAdaptorConsumer'
+  args = ['topic']
+  classpath = sourceSets.main.runtimeClasspath
+}
+
+task("kafkaProducer", dependsOn: 'classes', type: JavaExec) {
+  main = 'tutorial.kafka.KafkaAdaptorProducer'
+  args = ['topic']
+  classpath = sourceSets.main.runtimeClasspath
 }

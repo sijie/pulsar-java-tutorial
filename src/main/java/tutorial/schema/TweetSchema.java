@@ -4,6 +4,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import org.apache.pulsar.client.api.Schema;
+import org.apache.pulsar.shade.org.apache.pulsar.common.schema.SchemaInfo;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -41,5 +42,9 @@ public class TweetSchema implements Schema<Tweet> {
             throw new RuntimeException(e);
         }
         return bytes;
+    }
+
+    public SchemaInfo getSchemaInfo() {
+        return null;
     }
 }
