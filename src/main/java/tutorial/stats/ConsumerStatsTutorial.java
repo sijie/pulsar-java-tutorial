@@ -1,10 +1,10 @@
 package tutorial.stats;
 
 import org.apache.pulsar.client.api.Consumer;
-import org.apache.pulsar.client.api.ConsumerStats;
 import org.apache.pulsar.client.api.Message;
 import org.apache.pulsar.client.api.PulsarClient;
 import org.apache.pulsar.client.api.PulsarClientException;
+import org.apache.pulsar.client.impl.ConsumerStats;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +49,6 @@ public class ConsumerStatsTutorial {
         log.info("Stats for this consumer");
         log.info("=======================");
         log.info("Messages received: {}", stats.getNumMsgsReceived());
-        log.info("Receive rate: {}", stats.getRateMsgsReceived());
         log.info("Failed acks: {}", stats.getNumAcksFailed());
 
         consumer.close();
