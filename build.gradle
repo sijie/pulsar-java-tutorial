@@ -64,26 +64,6 @@ task("asyncConsumerTutorial", dependsOn: 'classes', type: JavaExec) {
   classpath = sourceSets.main.runtimeClasspath
 }
 
-task("schemaProducerTutorial", dependsOn: 'classes', type: JavaExec) {
-  main = 'tutorial.schema.SchemaProducerTutorial'
-  classpath = sourceSets.main.runtimeClasspath
-}
-
-task("schemaConsumerTutorial", dependsOn: 'classes', type: JavaExec) {
-  main = 'tutorial.schema.SchemaConsumerTutorial'
-  classpath = sourceSets.main.runtimeClasspath
-}
-
-task("asyncSchemaConsumerTutorial", dependsOn: 'classes', type: JavaExec) {
-  main = 'tutorial.schema.async.AsyncSchemaConsumerTutorial'
-  classpath = sourceSets.main.runtimeClasspath
-}
-
-task("asyncSchemaProducerTutorial", dependsOn: 'classes', type: JavaExec) {
-  main = 'tutorial.schema.async.AsyncSchemaProducerTutorial'
-  classpath = sourceSets.main.runtimeClasspath
-}
-
 task("kafkaConsumerTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.kafka.KafkaAdaptorConsumer'
   args = ['topic']
