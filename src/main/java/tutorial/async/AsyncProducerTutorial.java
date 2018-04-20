@@ -35,17 +35,19 @@ public class AsyncProducerTutorial {
                         byte[] msgContent = String.format("hello-pulsar-%d", i).getBytes();
                         msgBuilder.setContent(msgContent);
                         producer.sendAsync(msgBuilder.build())
-                                .thenAccept(msgId -> {
-                                    log.info("Successfully sent message with ID {}", msgId);
-                                })
-                                .exceptionally(ex -> {
-                                    log.error(ex.toString());
+                                .handle((msgId, e) -> {
+                                    if (e != null) {
+                                        e.printStackTrace();
+                                    }
+
+                                    log.info("Successfully produced message with ID {}",
+                                            new String(msgId.toByteArray()));
                                     return null;
                                 });
                     });
                 })
-                .exceptionally(ex -> {
-                    log.error(ex.toString());
+                .exceptionally(e -> {
+                    log.error(e.toString());
                     return null;
                 });
     }

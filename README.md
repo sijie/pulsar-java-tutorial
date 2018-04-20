@@ -59,7 +59,26 @@ Pulsar consumer | A simple Pulsar consumer that listens indefinitely on a Pulsar
 
 ### Basic consumer and producer
 
+To start up a basic Pulsar Java consumer listening on the topic `tutorial-topic`:
+
+```bash
+$ ./gradlew consumerTutorial
+```
+
+If Pulsar is running, you should see something like this in logs when the consumer has successfully subscribed to the topic:
+
+```log
+09:55:40.711 [main] INFO  tutorial.ConsumerTutorial - Created consumer for the topic tutorial-topic
+```
+
+Now you can start up a basic Java producer on `tutorial-topic` in another terminal window:
 
 ```bash
 $ ./gradlew producerTutorial
+```
+
+This producer will send 10 messages on the topic (`hello-pulsar-1`, `hello-pulsar-2`, etc.). In the terminal window for the Java consumer, you should see `INFO`-level logs like this for each message received:
+
+```log
+09:57:01.447 [main] INFO  tutorial.ConsumerTutorial - Received message 'hello-pulsar-1' with ID 29:24:-1:0
 ```
