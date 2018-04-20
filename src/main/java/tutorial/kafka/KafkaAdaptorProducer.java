@@ -27,7 +27,7 @@ public class KafkaAdaptorProducer {
 
         log.info("Producer for topic {} successfully created", topic);
 
-        IntStream.range(1, 1001).forEach(i -> {
+        IntStream.range(1, 101).forEach(i -> {
             String value = String.format("hello-%d", i);
             ProducerRecord<Integer, String> record = new ProducerRecord<>(topic, i, value);
             producer.send(record);

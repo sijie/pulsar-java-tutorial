@@ -46,6 +46,7 @@ public class ConsumerStatsTutorial {
 
         ConsumerStats stats = consumer.getStats();
 
+        log.info("");
         log.info("Stats for this consumer");
         log.info("=======================");
         log.info("Messages received: {}", stats.getNumMsgsReceived());

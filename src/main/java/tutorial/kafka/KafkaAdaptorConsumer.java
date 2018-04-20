@@ -41,6 +41,7 @@ public class KafkaAdaptorConsumer {
             } catch (WakeupException e) {
                 // Ignore
             } finally {
+                consumer.commitAsync();
                 log.info("Consumer for topics {} temporarily closed", topics);
                 this.run();
             }

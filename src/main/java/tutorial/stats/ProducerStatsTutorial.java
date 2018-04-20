@@ -44,9 +44,11 @@ public class ProducerStatsTutorial {
 
         ProducerStats stats = producer.getStats();
 
+        log.info("");
         log.info("Stats for this producer:");
         log.info("========================");
         log.info("Messages sent: {}", stats.getNumMsgsSent());
+        log.info("Acks received: {}", stats.getNumAcksReceived());
         log.info("Failed sends: {}", stats.getNumSendFailed());
 
         producer.close();

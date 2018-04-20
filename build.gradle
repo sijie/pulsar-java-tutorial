@@ -66,13 +66,13 @@ task("asyncConsumerTutorial", dependsOn: 'classes', type: JavaExec) {
 
 task("kafkaConsumerTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.kafka.KafkaAdaptorConsumer'
-  args = ['topic']
+  args = ['tutorial-topic']
   classpath = sourceSets.main.runtimeClasspath
 }
 
 task("kafkaProducerTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.kafka.KafkaAdaptorProducer'
-  args = ['topic']
+  args = ['tutorial-topic']
   classpath = sourceSets.main.runtimeClasspath
 }
 
@@ -83,6 +83,5 @@ task("producerStatsTutorial", dependsOn: 'classes', type: JavaExec) {
 
 task("consumerStatsTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.stats.ConsumerStatsTutorial'
-  args = ['topic']
   classpath = sourceSets.main.runtimeClasspath
 }
