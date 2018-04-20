@@ -45,6 +45,8 @@ public class TweetSchema implements Schema<Tweet> {
     }
 
     public SchemaInfo getSchemaInfo() {
-        return null;
+        SchemaInfo info = new SchemaInfo();
+        info.setName("Tweet");
+        return info;
     }
 }

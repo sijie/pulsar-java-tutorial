@@ -14,7 +14,7 @@ public class SchemaProducerTutorial {
     private static final Logger log = LoggerFactory.getLogger(SchemaProducerTutorial.class);
     private static final String SERVICE_URL = "pulsar://localhost:6650";
     private static final String TOPIC_NAME = "tutorial-topic";
-    private static final int NUM_TO_PRODUCE = 1000;
+    private static final int NUM_TO_PRODUCE = 100;
 
     public static void main(String[] args) throws PulsarClientException {
         PulsarClient client = PulsarClient.builder()
