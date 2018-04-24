@@ -85,3 +85,8 @@ task("consumerStatsTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.stats.ConsumerStatsTutorial'
   classpath = sourceSets.main.runtimeClasspath
 }
+
+task("messageQueueTutorial", dependsOn: 'classes', type: JavaExec) {
+  main = 'tutorial.MessageQueueTutorial'
+  classpath = sourceSets.main.runtimeClasspath
+}
