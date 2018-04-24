@@ -38,13 +38,10 @@ public class MessageQueueTutorial {
                 .serviceUrl(SERVICE_URL)
                 .build();
 
-
-
         ConsumerBuilder<byte[]> consumerBuilder = client.newConsumer()
                 .topic(TOPIC_NAME)
                 .subscriptionName(SUBSCRIPTION_NAME)
-                .subscriptionType(SubscriptionType.Shared)
-                .receiverQueueSize(1);
+                .subscriptionType(SubscriptionType.Shared);
 
         IntStream.range(0, NUM_CONSUMERS).forEach(i -> {
             try {
