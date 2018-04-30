@@ -1,7 +1,7 @@
 apply plugin: 'java'
 
 repositories {
-    jcenter()
+  jcenter()
 }
 
 sourceCompatibility = 1.8
@@ -11,82 +11,92 @@ group = 'com.streamlio.pulsar'
 archivesBaseName = 'pulsar-java-tutorial'
 version = '0.0.1'
 
-def urlFile = { url, name ->
-    File file = new File("$buildDir/download/${name}.jar")
-    file.parentFile.mkdirs()
-    if (!file.exists()) {
-        new URL(url).withInputStream { downloadStream ->
-            file.withOutputStream { fileOut ->
-                fileOut << downloadStream
-            }
-        }
+def previewVersion = 16
+
+def urlFile = { String url, String name ->
+  File file = new File("$buildDir/download/${name}.jar")
+  file.parentFile.mkdirs()
+  if (!file.exists()) {
+    new URL(url).withInputStream { downloadStream ->
+      file.withOutputStream { fileOut ->
+        fileOut << downloadStream
+      }
     }
-    files(file.absolutePath)
+  }
+  files(file.absolutePath)
 }
 
 dependencies {
-    compile urlFile('https://github.com/streamlio/incubator-pulsar/releases/download/v2.0.0-streamlio-12/pulsar-client-2.0.0-streamlio-12.jar', 'pulsar-client')
-    compile urlFile('https://github.com/streamlio/incubator-pulsar/releases/download/v2.0.0-streamlio-12/pulsar-client-kafka-2.0.0-streamlio-12.jar', 'pulsar-client-kafka')
-    //compile group: 'com.esotericsoftware',     name: 'kryo',                version: '4.0.2'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl',    version: '2.8.2'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core',          version: '2.8.2'
+  compile urlFile("https://github.com/streamlio/incubator-pulsar/releases/download/v2.0.0-streamlio-${previewVersion}/pulsar-client-2.0.0-streamlio-${previewVersion}.jar", 'pulsar-client')
+  compile urlFile("https://github.com/streamlio/incubator-pulsar/releases/download/v2.0.0-streamlio-${previewVersion}/pulsar-client-kafka-2.0.0-streamlio-${previewVersion}.jar", 'pulsar-client-kafka')
+  compile urlFile("https://github.com/streamlio/incubator-pulsar/releases/download/v2.0.0-streamlio-${previewVersion}/pulsar-client-admin-2.0.0-streamlio-${previewVersion}.jar", 'pulsar-client-admin')
+  //compile group: 'com.esotericsoftware',     name: 'kryo',                version: '4.0.2'
+  compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl',    version: '2.8.2'
+  compile group: 'org.apache.logging.log4j', name: 'log4j-core',          version: '2.8.2'
 }
 
 jar {
-    doFirst {
-        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    }
-    exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
+  doFirst {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+  }
+  exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 }
+
+def defaultClasspath = sourceSets.main.runtimeClasspath
 
 task("producerTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.ProducerTutorial'
-  classpath = sourceSets.main.runtimeClasspath
+  classpath = defaultClasspath
 }
 
 task("consumerTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.ConsumerTutorial'
-  classpath = sourceSets.main.runtimeClasspath
+  classpath = defaultClasspath
 }
 
 task("readerTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.ReaderTutorial'
-  classpath = sourceSets.main.runtimeClasspath
+  classpath = defaultClasspath
 }
 
 task("asyncProducerTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.async.AsyncProducerTutorial'
-  classpath = sourceSets.main.runtimeClasspath
+  classpath = defaultClasspath
 }
 
 task("asyncConsumerTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.async.AsyncConsumerTutorial'
-  classpath = sourceSets.main.runtimeClasspath
+  classpath = defaultClasspath
 }
 
 task("kafkaConsumerTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.kafka.KafkaAdaptorConsumer'
   args = ['tutorial-topic']
-  classpath = sourceSets.main.runtimeClasspath
+  classpath = defaultClasspath
 }
 
 task("kafkaProducerTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.kafka.KafkaAdaptorProducer'
   args = ['tutorial-topic']
-  classpath = sourceSets.main.runtimeClasspath
+  classpath = defaultClasspath
 }
 
 task("producerStatsTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.stats.ProducerStatsTutorial'
-  classpath = sourceSets.main.runtimeClasspath
+  classpath = defaultClasspath
 }
 
 task("consumerStatsTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.stats.ConsumerStatsTutorial'
-  classpath = sourceSets.main.runtimeClasspath
+  classpath = defaultClasspath
 }
 
 task("messageQueueTutorial", dependsOn: 'classes', type: JavaExec) {
-  main = 'tutorial.MessageQueueTutorial'
-  classpath = sourceSets.main.runtimeClasspath
+  main = 'tutorial.usecases.MessageQueueTutorial'
+  classpath = defaultClasspath
+}
+
+task("stockTickerCompactionTutorial", dependsOn: 'classes', type: JavaExec) {
+  main = 'tutorial.usecases.StockTickerTutorial'
+  classpath = defaultClasspath
 }
