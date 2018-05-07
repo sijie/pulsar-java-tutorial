@@ -11,7 +11,11 @@ group = 'com.streamlio.pulsar'
 archivesBaseName = 'pulsar-java-tutorial'
 version = '0.0.1'
 
-def previewVersion = 16
+ext {
+  previewVersion = 16
+  log4jVersion   = '2.8.2'
+  defaultClasspath = sourceSets.main.runtimeClasspath
+}
 
 def urlFile = { String url, String name ->
   File file = new File("$buildDir/download/${name}.jar")
@@ -31,8 +35,8 @@ dependencies {
   compile urlFile("https://github.com/streamlio/incubator-pulsar/releases/download/v2.0.0-streamlio-${previewVersion}/pulsar-client-kafka-2.0.0-streamlio-${previewVersion}.jar", 'pulsar-client-kafka')
   compile urlFile("https://github.com/streamlio/incubator-pulsar/releases/download/v2.0.0-streamlio-${previewVersion}/pulsar-client-admin-2.0.0-streamlio-${previewVersion}.jar", 'pulsar-client-admin')
   //compile group: 'com.esotericsoftware',     name: 'kryo',                version: '4.0.2'
-  compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl',    version: '2.8.2'
-  compile group: 'org.apache.logging.log4j', name: 'log4j-core',          version: '2.8.2'
+  compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl',    version: log4jVersion
+  compile group: 'org.apache.logging.log4j', name: 'log4j-core',          version: log4jVersion
 }
 
 jar {
@@ -41,8 +45,6 @@ jar {
   }
   exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 }
-
-def defaultClasspath = sourceSets.main.runtimeClasspath
 
 task("producerTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.ProducerTutorial'
