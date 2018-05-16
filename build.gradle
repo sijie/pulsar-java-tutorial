@@ -111,3 +111,8 @@ task("exclusiveSubscriptionTutorial", dependsOn: 'classes', type: JavaExec) {
   main = 'tutorial.subscriptions.ExclusiveSubscriptionTutorial'
   classpath = defaultClasspath
 }
+
+task("failoverSubscriptionTutorial", dependsOn: 'classes', type: JavaExec) {
+  main = 'tutorial.subscriptions.FailoverSubscriptionTutorial'
+  classpath = defaultClasspath
+}
