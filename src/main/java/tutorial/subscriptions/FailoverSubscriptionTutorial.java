@@ -68,8 +68,10 @@ public class FailoverSubscriptionTutorial {
             try {
                 producer.send(msg);
 
+                Thread.sleep(100);
+
                 if (i > 5) mainConsumer.close();
-            } catch (PulsarClientException e) {
+            } catch (InterruptedException | PulsarClientException e) {
                 LOG.error(e.getMessage());
             }
         });
